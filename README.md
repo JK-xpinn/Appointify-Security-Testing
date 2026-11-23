@@ -1,128 +1,75 @@
-# Appointify Security Assessment Project
+# Appointify Web Application Security Assessment
 
-## Overview
-This repository contains a comprehensive security assessment of the Appointify web platform.
+A practical security assessment of the Appointify web platform, completed as part of a cybersecurity capstone project.
 
-The assessment was conducted as part of a cybersecurity capstone project and focuses on evaluating the application’s resilience against real-world attack scenarios across multiple security domains.
+The work focused on evaluating application security controls, documenting observed weaknesses, and communicating remediation recommendations.
 
-The goal of this project was not just to find vulnerabilities, but to understand how the system behaves under adversarial conditions and how well its defensive controls perform.
+## Assessment Scope
 
----
-
-## Scope of Assessment
-The testing covered the following areas:
-
-- Authentication and session management
-- Authorization and access control
+- Authentication and password-reset behaviour
+- Session management
+- Role-based authorization and access control
 - Input validation and injection resistance
-- Data exposure and API security
-- Business logic validation
-- Infrastructure and network security
+- API responses and data exposure
+- Business logic checks
+- Transport security and HTTP security headers
 
----
+## Methodology and Tools
 
-## Methodology
-The assessment followed a structured, attacker-focused approach:
+Testing included manual application interaction, HTTP request interception and modification, role-based access checks, and review of network and browser responses.
 
-- Manual adversarial testing of application features
-- HTTP request interception and manipulation using Burp Suite
-- Network scanning and service enumeration using Nmap
-- TLS traffic inspection using Wireshark
-- Browser developer tools for API and frontend analysis
-- Multi-session simulations for business logic testing
+Tools used:
+- **Burp Suite:** request interception and application testing
+- **Nmap:** service discovery
+- **Wireshark:** network traffic inspection
+- **Browser Developer Tools:** frontend and API behaviour analysis
 
----
+## Findings Summary
 
-## Tools Used
-- Burp Suite (HTTP interception and payload testing)
-- Nmap (port scanning and reconnaissance)
-- Wireshark (network traffic analysis)
-- Browser Developer Tools (API inspection)
-- Manual Testing Techniques
+The assessment identified areas where existing controls worked as expected, alongside weaknesses requiring remediation.
 
----
+| Area | Observation | Assessment |
+|---|---|---|
+| Authorization | Tested role restrictions and JWT-protected access blocked the unauthorized actions attempted | Positive control observed in tested cases |
+| IDOR checks | Cross-user access attempts were blocked in the tested scenarios | No IDOR confirmed in tested cases |
+| Injection and XSS | Tested payloads did not demonstrate successful NoSQL injection or XSS | No exploit confirmed in tested cases |
+| Login protection | No effective rate limiting, lockout, or CAPTCHA control was observed during testing | Hardening required |
+| MFA | Multi-factor authentication was not available in the tested flow | Improvement recommended |
+| Session handling | A session remained valid after the 30-minute observation point | Review session lifetime and invalidation policy |
+| Password reset | Password-reset email flow did not work as expected during testing | Functional and security review required |
+| Input validation | Phone-number validation accepted weak or insufficiently constrained input | Validation improvement required |
+| HTTP headers | Content-Security-Policy and X-Frame-Options were not present in the observed responses | Security-header hardening recommended |
+| Data exposure | Responses included implementation fields such as `_id` and `__v` | Review whether these fields are necessary to expose |
+| Transport security | TLS 1.3 was observed | Positive configuration observed |
 
-## Key Findings Summary
+These observations are limited to the endpoints, accounts, test cases, and time of assessment. A failed test does not prove the absence of a vulnerability across the entire application.
 
-### Strengths
-- Strong Role-Based Access Control (RBAC)
-- Secure password hashing using bcrypt
-- Effective protection against XSS and injection attacks
-- Robust business logic (no double booking, no unauthorized actions)
-- Secure transport layer (TLS 1.3 enforced)
-- No critical data exposure
+## Overall Assessment
 
-### Critical Gaps Identified
-- No brute force protection on login
-- No Multi-Factor Authentication (MFA)
+The tested application demonstrated working access-control protections in the scenarios exercised. The most important improvement areas were authentication hardening, session policy, password-reset reliability, input validation, and HTTP security headers.
 
-### Medium Risk Issues
-- Session timeout not enforced
-- Missing HTTP security headers
-- Weak phone number validation
-- Password reset functionality failure
-- Additional exposed service ports
+The assessment did not establish that the application was free of vulnerabilities. Further testing and retesting would be required after remediation.
 
----
+## Deliverables
 
-## Security Maturity
-Overall Assessment: **Moderate to Strong**
+The repository contains assessment documentation, including technical findings and remediation recommendations. Refer to the report files in the repository for the detailed evidence and testing context.
 
-The application demonstrates a solid security foundation but requires targeted improvements in authentication hardening and security configuration.
+## What This Project Demonstrates
 
----
-
-## Repository Structure
-
-```
-Appointify-Security-Assessment/
-│
-├── Technical-Report/
-│ └── Cybersecurity_Technical_Report.pdf
-│
-├── Vulnerability-Assessment/
-│ └── Vulnerability_Assessment_Report.pdf
-│
-├── Penetration-Test/
-│ └── Penetration_Test_Summary.pdf
-│
-├── Additional-Testing/
-│ └── Additional_Security_Testing.pdf
-│
-├── Remediation-Plan/
-│ └── Security_Remediation_Plan.pdf
-│
-└── README.md
-```
-
----
-
-## Key Learning Outcomes
-- Practical understanding of real-world web application security testing
-- Experience with identifying and classifying vulnerabilities by risk level
-- Exposure to authentication and session management weaknesses
-- Hands-on use of security tools and testing methodologies
-- Ability to document findings in a professional security report format
-
----
-
-## About This Project
-This project reflects a real-world approach to security testing, focusing on both attack simulation and defensive evaluation.
-
-It demonstrates not only the ability to identify vulnerabilities but also the ability to analyze system behavior and recommend practical remediation strategies.
-
----
+- Manual web application and API security testing
+- Authentication and authorization review
+- Request manipulation with Burp Suite
+- Evidence-based finding documentation
+- Risk communication and remediation planning
 
 ## Author
-Adekunle A. Joseph  
 
-GitHub: https://github.com/JK-xpinn  
-LinkedIn: (https://www.linkedin.com/in/joseph-adekunle-87600b295 ) 
-Medium: (https://medium.com/@spinnnate7) 
+**Adekunle A. Joseph**
 
----
+- [GitHub](https://github.com/JK-xpinn)
+- [LinkedIn](https://www.linkedin.com/in/joseph-adekunle-87600b295)
+- [Medium](https://medium.com/@spinnnate7)
 
-## Note
-This repository contains sanitized documentation for educational and portfolio purposes. Sensitive details have been adjusted where necessary.
+## Disclaimer
 
-
+This repository contains sanitized project documentation for educational and portfolio purposes. Testing was conducted within the project's authorized scope. Sensitive information has been omitted or adjusted where necessary.
